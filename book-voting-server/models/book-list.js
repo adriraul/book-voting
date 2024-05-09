@@ -9,6 +9,10 @@ class BookList {
     ];
   }
 
+  getBooks() {
+    return this.books;
+  }
+
   addBook(name) {
     const newBook = new Book(name);
     this.books.push(newBook);
@@ -19,7 +23,7 @@ class BookList {
     this.books = this.books.filter((book) => book.id !== id);
   }
 
-  icreaseVotes(id) {
+  increaseVotes(id) {
     this.book = this.books.map((book) => {
       if (book.id === id) {
         book.votes += 1;
