@@ -1,40 +1,37 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { Container, Row, Col, Alert, Badge } from "react-bootstrap";
 import { BookAdd } from "../components/BookAdd";
 import { BookList } from "../components/BookList";
 import { SocketContext } from "../context/SocketContext";
 import { BookChart } from "../components/BookChart";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function HomePage() {
   const { online } = useContext(SocketContext);
 
   return (
-    <div className="container">
-      <div className="alert">
-        <p>
-          Service status:
-          {online ? (
-            <span className="text-success"> Online</span>
-          ) : (
-            <span className="text-danger"> Offline</span>
-          )}
-        </p>
-      </div>
-      <h1>BookNames</h1>
-      <div className="row">
-        <div className="col">
+    <Container className="mt-4">
+      <Alert variant={online ? "success" : "danger"}>
+        Service status:{" "}
+        <Badge bg={online ? "success" : "danger"}>
+          {online ? "Online" : "Offline"}
+        </Badge>
+      </Alert>
+      {/*<h1 className="text-center mb-4">BookNames</h1>*/}
+      <Row className="mb-4">
+        <Col>
           <BookChart />
-        </div>
-      </div>
-      <hr />
-      <div className="row">
-        <div className="col-8">
+        </Col>
+      </Row>
+      <Row>
+        <Col md={8}>
           <BookList />
-        </div>
-        <div className="col-4">
+        </Col>
+        <Col md={4}>
           <BookAdd />
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

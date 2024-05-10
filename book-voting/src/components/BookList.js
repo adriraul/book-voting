@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Button, Table, FormControl } from "react-bootstrap";
 import { SocketContext } from "../context/SocketContext";
 
 export const BookList = () => {
@@ -10,7 +11,7 @@ export const BookList = () => {
       setBooks(books);
     });
 
-    return () => socket.off("current-books"); //desmontar el useeffect
+    return () => socket.off("current-books"); // desmontar el useeffect
   }, [socket]);
 
   const nameChanged = (event, id) => {
@@ -42,36 +43,32 @@ export const BookList = () => {
     return books.map((book) => (
       <tr key={book.id}>
         <td>
-          <button className="btn btn-primary" onClick={() => vote(book.id)}>
-            {" "}
-            +1{" "}
-          </button>
+          <Button variant="primary" onClick={() => vote(book.id)}>
+            +1
+          </Button>
         </td>
         <td>
-          <input
-            className="form-control"
+          <FormControl
             value={book.name}
             onChange={(event) => nameChanged(event, book.id)}
             onBlur={() => onFocusLost(book.id, book.name)}
-          ></input>
+          />
         </td>
         <td>
           <h3>{book.votes}</h3>
         </td>
         <td>
-          <button
-            className="btn btn-danger"
-            onClick={() => deleteBook(book.id)}
-          >
+          <Button variant="danger" onClick={() => deleteBook(book.id)}>
             Borrar
-          </button>
+          </Button>
         </td>
       </tr>
     ));
   };
+
   return (
     <>
-      <table className="table table-stripped">
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th></th>
@@ -81,7 +78,7 @@ export const BookList = () => {
           </tr>
         </thead>
         <tbody>{crearRows()}</tbody>
-      </table>
+      </Table>
     </>
   );
 };

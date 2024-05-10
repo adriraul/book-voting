@@ -1,36 +1,48 @@
-import React, { useContext, useEffect } from "react";
-import { Chart, registerables } from "chart.js";
+import React, { useContext, useEffect, useRef } from "react";
+import { Chart, registerables, Colors } from "chart.js";
 import { SocketContext } from "../context/SocketContext";
 Chart.register(...registerables);
-let myChart;
+Chart.register(Colors);
 
 export const BookChart = () => {
   const { socket } = useContext(SocketContext);
+  const chartRef = useRef(null);
 
   useEffect(() => {
-    socket.on("current-books", (books) => {
-      console.log(books);
+    const handleCurrentBooks = (books) => {
       createChart(books);
-    });
+    };
+
+    socket.on("current-books", handleCurrentBooks);
+
+    return () => {
+      socket.off("current-books", handleCurrentBooks);
+      if (chartRef.current) {
+        chartRef.current.destroy();
+      }
+    };
   }, [socket]);
 
   const createChart = (books = []) => {
     var ctx = document.getElementById("myChart");
-    if (typeof myChart !== "undefined") myChart.destroy();
-    myChart = new Chart(ctx, {
-      type: "bar",
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
+    chartRef.current = new Chart(ctx, {
+      type: "doughnut",
       data: {
         labels: books.map((book) => book.name),
         datasets: [
           {
             label: "# of Votes",
             data: books.map((book) => book.votes),
-            borderWidth: 1,
+            borderWidth: 2,
           },
         ],
       },
       options: {
-        animation: false,
+        indexAxis: "y",
+        animation: true,
         scales: {
           y: {
             beginAtZero: true,
@@ -40,27 +52,5 @@ export const BookChart = () => {
     });
   };
 
-  /*useEffect(() => {
-        var ctx = document.getElementById('myChart');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-              labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-              datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-              }]
-            },
-            options: {
-              scales: {
-                y: {
-                  beginAtZero: true
-                }
-              }
-            }
-          });
-    }, [])*/
-
-  return <canvas id="myChart"></canvas>;
+  return <canvas id="myChart" style={{ maxHeight: "400px" }}></canvas>;
 };

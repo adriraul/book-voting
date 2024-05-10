@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Form, Button, InputGroup } from "react-bootstrap";
 import { SocketContext } from "../context/SocketContext";
 
 export const BookAdd = () => {
@@ -12,17 +13,22 @@ export const BookAdd = () => {
     }
     setValue("");
   };
+
   return (
     <>
       <h3>Añadir Libro</h3>
-      <form onSubmit={onSubmit}>
-        <input
-          className="form-control"
-          placeholder="Nuevo libro"
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-        ></input>
-      </form>
+      <Form onSubmit={onSubmit}>
+        <InputGroup className="mb-3">
+          <Form.Control
+            placeholder="Nuevo libro"
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+          />
+          <Button type="submit" variant="primary">
+            Añadir
+          </Button>
+        </InputGroup>
+      </Form>
     </>
   );
 };
