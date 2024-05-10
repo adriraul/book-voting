@@ -30,13 +30,13 @@ export const BookList = () => {
     socket.emit("change-book-name", { id, newName });
   };
 
-  const vote = ( id ) => {
-    socket.emit('vote-book', id)
-  }
+  const vote = (id) => {
+    socket.emit("vote-book", id);
+  };
 
   const deleteBook = (id) => {
-    socket.emit('delete-book' , id)
-  }
+    socket.emit("delete-book", id);
+  };
 
   const crearRows = () => {
     return books.map((book) => (

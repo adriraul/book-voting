@@ -5,7 +5,7 @@ import { SocketContext } from "../context/SocketContext";
 import { BookChart } from "../components/BookChart";
 
 function HomePage() {
-  const { online } = useContext( SocketContext );
+  const { online } = useContext(SocketContext);
 
   return (
     <div className="container">
@@ -22,7 +22,7 @@ function HomePage() {
       <h1>BookNames</h1>
       <div className="row">
         <div className="col">
-          <BookChart/>
+          <BookChart />
         </div>
       </div>
       <hr />
